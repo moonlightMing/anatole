@@ -2,3 +2,6 @@
 demo/
 .hugo/*
 !.hugo/version
+
+.idea
+.vscode
