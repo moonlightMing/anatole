@@ -10,14 +10,26 @@
     </div>
     <ul class="social-links">
         {{ range $item := .Site.Params.socialIcons }}
-            <li>
-                <a href="{{ $item.url }}" rel="me" aria-label="{{ $item.title }}">
-                    <i class="{{ $item.icon }} fa-2x" aria-hidden="true"></i>
-                </a>
-            </li>
+        <li>
+            <a href="{{ $item.url }}" rel="me" aria-label="{{ $item.title }}">
+                <i class="{{ $item.icon }} fa-2x" aria-hidden="true"></i>
+            </a>
+        </li>
         {{ end }}
     </ul>
     <div class="footer">
-        <div class="by_farbox">&copy; {{ .Site.Params.author }} {{ if isset .Site.Params "copyright" }} <a href="{{ .Site.Params.copyrightURL }}">{{ .Site.Params.copyright }}</a> {{ else }} {{ now.Format "2006"}} {{end}}</div>
+        <div class="by_farbox">
+            &copy; {{ .Site.Params.author }}
+            {{ if isset .Site.Params "copyright" }}
+            <a href="{{ .Site.Params.copyrightURL }}">
+                {{ .Site.Params.copyright }}
+            </a>
+            <div>
+                {{- partial "beian_footer.html" . }}
+            </div>
+            {{ else }}
+            {{ now.Format "2006"}}
+            {{end}}
+        </div>
     </div>
 </div>
