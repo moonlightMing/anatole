@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     {{- hugo.Generator -}}
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-    <meta name="description" content="{{ if .Params.description }}{{ .Params.description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+    <meta name="description"
+          content="{{ if .Params.description }}{{ .Params.description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
     {{- if .Site.Params.googleSiteVerify }}
     <meta name="google-site-verification" content="{{ .Site.Params.googleSiteVerify }}">
     {{- end -}}
@@ -19,23 +20,23 @@
           type="text/css">
     {{ $markupHighlightStyle := resources.Get "css/markupHighlight.css" | resources.Minify | resources.Fingerprint }}
     <link rel="stylesheet"
-        href="{{ $markupHighlightStyle.RelPermalink }}"
-        integrity="{{ $markupHighlightStyle.Data.Integrity }}"
-        crossorigin="anonymous"
-        type="text/css">
+          href="{{ $markupHighlightStyle.RelPermalink }}"
+          integrity="{{ $markupHighlightStyle.Data.Integrity }}"
+          crossorigin="anonymous"
+          type="text/css">
     {{ range .Site.Params.customCss }}
-        {{ $minstyles := resources.Get . }}
-        {{ $styles := $minstyles | resources.Minify | resources.Fingerprint }}
-        <link rel="stylesheet"
-        href="{{ $styles.RelPermalink }}"
-        integrity="{{ $styles.Data.Integrity }}"
-        crossorigin="anonymous"
-        media="screen" />
+    {{ $minstyles := resources.Get . }}
+    {{ $styles := $minstyles | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet"
+          href="{{ $styles.RelPermalink }}"
+          integrity="{{ $styles.Data.Integrity }}"
+          crossorigin="anonymous"
+          media="screen"/>
     {{ end }}
-    <link rel="stylesheet" 
-    href="/css/all.min.css"
-    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" 
-    crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdn.bootcss.com/font-awesome/5.15.1/css/all.min.css"
+          integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+          crossorigin="anonymous"/>
 
     <!-- Favicons -->
     <link rel="shortcut icon" href="{{ .Site.Params.favicon | relURL }}favicon.ico" type="image/x-icon">
@@ -47,12 +48,14 @@
 
     <!-- RSS -->
     {{ with .OutputFormats.Get "rss" -}}
-        {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
+    {{ printf `
+    <link rel="%s" type="%s" href="%s" title="%s"/>
+    ` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
     {{ end -}}
 
     <!-- JavaScript -->
     {{ $anatoleHeader := resources.Get "js/anatole-header.js" }}
-    {{ $secureHeaderJS := $anatoleHeader |  resources.Minify | resources.Fingerprint }}
+    {{ $secureHeaderJS := $anatoleHeader | resources.Minify | resources.Fingerprint }}
     <script type="text/javascript"
             src="{{ $secureHeaderJS.RelPermalink }}"
             integrity="{{ $secureHeaderJS.Data.Integrity }}"
@@ -60,32 +63,32 @@
 
 
     {{ if not .Site.Params.disableThemeSwitcher }}
-        {{ $anatoleThemeSwitcher := resources.Get "js/anatole-theme-switcher.js" }}
-        {{ $secureThemeSwitcherJS := $anatoleThemeSwitcher |  resources.Minify | resources.Fingerprint }}
-        <script type="text/javascript"
-                src="{{ $secureThemeSwitcherJS.RelPermalink }}"
-                integrity="{{ $secureThemeSwitcherJS.Data.Integrity }}"
-                crossorigin="anonymous"></script>
+    {{ $anatoleThemeSwitcher := resources.Get "js/anatole-theme-switcher.js" }}
+    {{ $secureThemeSwitcherJS := $anatoleThemeSwitcher | resources.Minify | resources.Fingerprint }}
+    <script type="text/javascript"
+            src="{{ $secureThemeSwitcherJS.RelPermalink }}"
+            integrity="{{ $secureThemeSwitcherJS.Data.Integrity }}"
+            crossorigin="anonymous"></script>
     {{ end }}
 
     {{- $js := "" -}}
     {{- range .Site.Params.customJs -}}
-        {{- if or (in . "http://") (in . "https://") -}}
-            <script src="{{ . | relURL }}"></script>
-        {{- else -}}
-            {{- $customJS := resources.Get . -}}
-            {{- if $customJS -}}
-                {{- if eq $js "" -}}
-                    {{- $js = $customJS -}}
-                {{- else -}}
-                    {{- $js = slice $js $customJS | resources.Concat "js/custom.js" -}}
-                {{- end -}}
-            {{- end -}}
-        {{- end -}}
+    {{- if or (in . "http://") (in . "https://") -}}
+    <script src="{{ . | relURL }}"></script>
+    {{- else -}}
+    {{- $customJS := resources.Get . -}}
+    {{- if $customJS -}}
+    {{- if eq $js "" -}}
+    {{- $js = $customJS -}}
+    {{- else -}}
+    {{- $js = slice $js $customJS | resources.Concat "js/custom.js" -}}
+    {{- end -}}
+    {{- end -}}
+    {{- end -}}
     {{- end -}}
 
     {{- if ne $js "" -}}
-    {{- $secureJS := $js |  resources.Minify | resources.Fingerprint -}}
+    {{- $secureJS := $js | resources.Minify | resources.Fingerprint -}}
     <script type="text/javascript"
             src="{{ $secureJS.RelPermalink }}"
             integrity="{{ $secureJS.Data.Integrity }}"
